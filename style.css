@@ -1,0 +1,37 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+.menu {
+  bottom: 12vh;
+  width: 100%;
+  position: fixed;
+}
+
+.works {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.works a {
+  color: white;
+  font-size: 20px;
+  transition: 0.3s;
+}
+
+.works a:hover {
+  color: grey;
+}
