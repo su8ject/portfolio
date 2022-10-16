@@ -3,7 +3,7 @@ import { GLTFLoader } from "GLTFLoader";
 import { OrbitControls } from "OrbitControls";
 import { RectAreaLightUniformsLib } from "RectAreaLightUniformsLib";
 
-function init() {
+const init = () => {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
     75,
@@ -14,7 +14,7 @@ function init() {
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   const controls = new OrbitControls(camera, renderer.domElement);
 
-  scene.background = new THREE.Color(0x111426);
+  scene.background = new THREE.Color(0x1e1e24);
 
   camera.position.set(0, 0, 2.5);
 
@@ -22,36 +22,40 @@ function init() {
   document.body.appendChild(renderer.domElement);
 
   controls.autoRotate = true;
-  controls.autoRotateSpeed = 1;
+  controls.autoRotateSpeed = 0.5;
   controls.enableDamping = true;
+  controls.enableZoom = false;
+  controls.enableRotate = true;
+  controls.maxPolarAngle = 1.6;
+  controls.minPolarAngle = 1.2;
 
   const loader = new GLTFLoader();
   loader.load("./model/scene.gltf", (gltf) => {
     scene.add(gltf.scene);
   });
 
-  function updateCamera() {
-    scene.position.set(mousePos.x / 2.5, mousePos.y / 2.5, 0);
-  }
-
-  document.addEventListener("mousemove", handleMouseMove, false);
-
   let mousePos = { x: 0, y: 0 };
 
-  function handleMouseMove(event) {
+  const handleMouseMove = (event) => {
     let tx = -1 + (event.clientX / window.innerWidth) * 2;
     let ty = -1 + (event.clientY / window.innerHeight) * 2;
     mousePos = { x: tx, y: ty };
-  }
+  };
 
-  window.addEventListener("resize", onWindowResize, false);
+  const updateScene = () => {
+    scene.position.set(mousePos.x / 4, mousePos.y / 4, 0);
+  };
 
-  function onWindowResize() {
+  document.addEventListener("mousemove", handleMouseMove, false);
+
+  const onWindowResize = () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
 
     renderer.setSize(window.innerWidth, window.innerHeight);
-  }
+  };
+
+  window.addEventListener("resize", onWindowResize, false);
 
   {
     const light = new THREE.DirectionalLight(0xffffff, 1);
@@ -82,7 +86,7 @@ function init() {
     scene.add(rectLight);
   }
 
-  function addStar() {
+  const addStar = () => {
     const geometry = new THREE.SphereGeometry(0.1, 16, 16);
     const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
     const star = new THREE.Mesh(geometry, material);
@@ -92,16 +96,16 @@ function init() {
 
     star.position.set(x, y, z);
     scene.add(star);
-  }
+  };
 
   Array(400).fill().forEach(addStar);
 
-  function animate() {
+  const animate = () => {
     controls.update();
     renderer.render(scene, camera);
-    updateCamera();
+    updateScene();
     requestAnimationFrame(animate);
-  }
+  };
   animate();
-}
+};
 init();
