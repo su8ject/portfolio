@@ -4,6 +4,8 @@ import { OrbitControls } from "OrbitControls";
 import { RectAreaLightUniformsLib } from "RectAreaLightUniformsLib";
 
 const init = () => {
+  const objArr = [];
+  const objNameArr = [];
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(
     75,
@@ -24,10 +26,14 @@ const init = () => {
   const onClick = (e) => {
     raycaster.setFromCamera(pointer, camera);
     const intersects = raycaster.intersectObjects(scene.children);
-    if (intersects[0].object.userData === "cone") {
+    if (intersects[0].object.userData === "GitHub") {
       document.location.href = "https://github.com/su8ject";
     }
   };
+
+  controls.addEventListener("change", function () {
+    onCameraChange();
+  });
 
   window.addEventListener("mousemove", onPointerMove);
   window.addEventListener("click", onClick);
@@ -75,50 +81,100 @@ const init = () => {
 
   const lightColor = 0x6c706d;
 
-  {
+  const addLight = (x, y, z, lx, ly, lz) => {
     const light = new THREE.DirectionalLight(lightColor, 1);
-    light.position.set(-2, 0, 10);
-    light.lookAt(0, -1, 0);
+    light.position.set(x, y, z);
+    light.lookAt(lx, ly, lz);
     scene.add(light);
-  }
+  };
 
-  {
-    const light = new THREE.DirectionalLight(lightColor, 1);
-    light.position.set(2, 0, 5);
-    light.lookAt(0, 1, 0);
-    scene.add(light);
-  }
+  addLight(-2, 0, 10, 0, -1, 0);
+  addLight(2, 0, 10, 0, 1, 0);
 
   RectAreaLightUniformsLib.init();
-  {
-    const rectLight = new THREE.RectAreaLight(lightColor, 1, 100, 100);
-    rectLight.position.set(-10, 0, 0);
-    rectLight.rotation.y = Math.PI + Math.PI / 4;
-    scene.add(rectLight);
-  }
 
-  {
+  const addReactLight = (x, y, z) => {
     const rectLight = new THREE.RectAreaLight(lightColor, 1, 100, 100);
-    rectLight.position.set(10, 0, 0);
-    rectLight.rotation.y = Math.PI - Math.PI / 4;
+    rectLight.position.set(x, y, z);
+    if (x > 0) {
+      rectLight.rotation.y = Math.PI - Math.PI / 4;
+    } else {
+      rectLight.rotation.y = Math.PI + Math.PI / 4;
+    }
     scene.add(rectLight);
-  }
+  };
+
+  addReactLight(-10, 0, 0);
+  addReactLight(10, 0, 0);
 
   const gradient = () => {
     const num = Math.floor(Math.random() * 61439) + 4096;
     return "#ff" + num.toString(16);
   };
 
-  const addCone = () => {
+  const addCone = (x, y, z, rx, ry, rz, name) => {
     const geometry = new THREE.ConeGeometry(0.1, 0.1, 32);
-    const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    const cone = new THREE.Mesh(geometry, material);
-    cone.position.set(0, 1, 0);
-    cone.userData = "cone";
-    scene.add(cone);
+    const coneMesh = new THREE.Mesh(geometry);
+    coneMesh.position.set(x, y, z);
+    coneMesh.userData = `${name}`;
+    coneMesh.rotation.x = rx;
+    coneMesh.rotation.y = ry;
+    coneMesh.rotation.z = rz;
+
+    scene.add(coneMesh);
+
+    const divElem = document.createElement("div");
+    divElem.style.position = "absolute";
+    divElem.style.color = "white";
+    divElem.innerHTML = `${name}`;
+    document.body.appendChild(divElem);
+    const divObj = new THREE.Object3D();
+
+    divObj.position.set(0, 0.2, 0);
+    coneMesh.add(divObj);
+
+    objNameArr.push(`${name}`);
+
+    let objData = {
+      name: `${name}`,
+      mesh: coneMesh,
+      divElem: divElem,
+      divObj: divObj,
+    };
+    objArr.push(objData);
   };
 
-  addCone();
+  addCone(0, 1, 0, 0, 0, 0, "GitHub");
+  addCone(0, -1, 0, Math.PI, 0, 0, "Snus");
+  addCone(1, 0, 0, 0, 0, -Math.PI / 2, "test");
+
+  function onCameraChange() {
+    objArr.forEach(function (objData) {
+      var proj = toScreenPosition(objData.divObj, camera);
+
+      objData.divElem.style.left = proj.x + "px";
+      objData.divElem.style.top = proj.y + "px";
+    });
+  }
+
+  function toScreenPosition(obj, camera) {
+    var vector = new THREE.Vector3();
+
+    var widthHalf = 0.5 * window.innerWidth;
+    var heightHalf = 0.5 * window.innerHeight;
+
+    obj.updateMatrixWorld();
+    vector.setFromMatrixPosition(obj.matrixWorld);
+    vector.project(camera);
+
+    vector.x = vector.x * widthHalf + widthHalf;
+    vector.y = -(vector.y * heightHalf) + heightHalf;
+
+    return {
+      x: vector.x,
+      y: vector.y,
+    };
+  }
 
   const addStar = () => {
     const geometry = new THREE.IcosahedronGeometry(0.1, 1);
@@ -146,7 +202,7 @@ const init = () => {
     raycaster.setFromCamera(pointer, camera);
     const intersects = raycaster.intersectObjects(scene.children);
     for (let i = 0; i < intersects.length; i++) {
-      if (intersects[i].object.userData === "cone") {
+      if (objNameArr.includes(intersects[i].object.userData)) {
         intersects[i].object.material.transparent = true;
         intersects[i].object.material.opacity = 0.5;
       }
