@@ -29,9 +29,21 @@ const init = () => {
     if (intersects[0].object.userData === "GitHub") {
       document.location.href = "https://github.com/su8ject";
     }
+    if (intersects[0].object.userData === "Responsive layout") {
+      document.location.href = "https://su8ject.github.io/lerning/3/";
+    }
+    if (intersects[0].object.userData === "Honey store (HTML + CSS)") {
+      document.location.href = "https://su8ject.github.io/lerning/4/";
+    }
+    if (intersects[0].object.userData === "Honey store (react)") {
+      document.location.href = "https://su8ject.github.io/honey/dist/#/";
+    }
+    if (intersects[0].object.userData === "Rick and Morty") {
+      document.location.href = "https://github.com/su8ject/rick-and-morty";
+    }
   };
 
-  controls.addEventListener("change", function () {
+  controls.addEventListener("change", () => {
     onCameraChange();
   });
 
@@ -52,9 +64,21 @@ const init = () => {
   controls.enableRotate = true;
 
   const loader = new GLTFLoader();
-  loader.load("./model/scene.gltf", (gltf) => {
-    scene.add(gltf.scene);
-  });
+  loader.load(
+    "./model/scene.gltf",
+    (gltf) => {
+      scene.add(gltf.scene);
+      const loader = document.querySelector(".wrapper-loader");
+      loader.remove();
+      const names = document.querySelectorAll(".name");
+      for (let i = 0; i < names.length; i++) {
+        names[i].classList.add("active");
+      }
+    },
+    (error) => {
+      console.log(error, "An error happened");
+    }
+  );
 
   let mousePos = { x: 0, y: 0 };
 
@@ -112,25 +136,23 @@ const init = () => {
     return "#ff" + num.toString(16);
   };
 
-  const addCone = (x, y, z, rx, ry, rz, name) => {
-    const geometry = new THREE.ConeGeometry(0.1, 0.1, 32);
+  const addSphere = (x, y, z, name) => {
+    const geometry = new THREE.SphereGeometry(0.04, 32, 16);
     const coneMesh = new THREE.Mesh(geometry);
     coneMesh.position.set(x, y, z);
     coneMesh.userData = `${name}`;
-    coneMesh.rotation.x = rx;
-    coneMesh.rotation.y = ry;
-    coneMesh.rotation.z = rz;
 
     scene.add(coneMesh);
 
-    const divElem = document.createElement("div");
+    const divElem = document.createElement("span");
     divElem.style.position = "absolute";
     divElem.style.color = "white";
+    divElem.classList = "name";
     divElem.innerHTML = `${name}`;
     document.body.appendChild(divElem);
     const divObj = new THREE.Object3D();
 
-    divObj.position.set(0, 0.2, 0);
+    divObj.position.set(0, 0.15, 0);
     coneMesh.add(divObj);
 
     objNameArr.push(`${name}`);
@@ -144,20 +166,22 @@ const init = () => {
     objArr.push(objData);
   };
 
-  addCone(0, 1, 0, 0, 0, 0, "GitHub");
-  addCone(0, -1, 0, Math.PI, 0, 0, "Snus");
-  addCone(1, 0, 0, 0, 0, -Math.PI / 2, "test");
+  addSphere(-0.6, 0.4, -0.7, "GitHub");
+  addSphere(0.4, -0.7, 0.6, "Responsive layout");
+  addSphere(1, 0, 0, "Honey store (HTML + CSS)");
+  addSphere(0.7, 0.6, -0.4, "Honey store (react)");
+  addSphere(-0.6, -0.4, 0.7, "Rick and Morty");
 
-  function onCameraChange() {
-    objArr.forEach(function (objData) {
+  const onCameraChange = () => {
+    objArr.forEach((objData) => {
       var proj = toScreenPosition(objData.divObj, camera);
 
       objData.divElem.style.left = proj.x + "px";
       objData.divElem.style.top = proj.y + "px";
     });
-  }
+  };
 
-  function toScreenPosition(obj, camera) {
+  const toScreenPosition = (obj, camera) => {
     var vector = new THREE.Vector3();
 
     var widthHalf = 0.5 * window.innerWidth;
@@ -174,7 +198,7 @@ const init = () => {
       x: vector.x,
       y: vector.y,
     };
-  }
+  };
 
   const addStar = () => {
     const geometry = new THREE.IcosahedronGeometry(0.1, 1);
