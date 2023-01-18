@@ -27,20 +27,23 @@ const init = () => {
     raycaster.setFromCamera(pointer, camera);
     const intersects = raycaster.intersectObjects(scene.children);
     if (intersects[0].object.userData === "GitHub") {
-      document.location.href = "https://github.com/su8ject";
-    }
+      window.open("https://github.com/su8ject");
+    };
     if (intersects[0].object.userData === "Responsive layout") {
-      document.location.href = "https://su8ject.github.io/lerning/3/";
-    }
+      window.open("https://su8ject.github.io/lerning/3/");
+    };
     if (intersects[0].object.userData === "Honey store (HTML + CSS)") {
-      document.location.href = "https://su8ject.github.io/lerning/4/";
-    }
+      window.open("https://su8ject.github.io/lerning/4/");
+    };
     if (intersects[0].object.userData === "Honey store (react)") {
-      document.location.href = "https://su8ject.github.io/honey/dist/#/";
-    }
+      window.open( "https://su8ject.github.io/honey/dist/#/");
+    };
     if (intersects[0].object.userData === "Rick and Morty") {
-      document.location.href = "https://github.com/su8ject/rick-and-morty";
-    }
+      window.open("https://su8ject.github.io/rick-and-morty/dist/#/");
+    };
+    if (intersects[0].object.userData === "To Do") {
+      window.open("https://su8ject.github.io/to-do/dist/#/");
+    };
   };
 
   controls.addEventListener("change", () => {
@@ -171,6 +174,7 @@ const init = () => {
   addSphere(1, 0, 0, "Honey store (HTML + CSS)");
   addSphere(0.7, 0.6, -0.4, "Honey store (react)");
   addSphere(-0.6, -0.4, 0.7, "Rick and Morty");
+  addSphere(0.2, 0.3, 0.93, "To Do");
 
   const onCameraChange = () => {
     objArr.forEach((objData) => {
