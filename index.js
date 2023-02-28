@@ -28,22 +28,22 @@ const init = () => {
     const intersects = raycaster.intersectObjects(scene.children);
     if (intersects[0].object.userData === "GitHub") {
       window.open("https://github.com/su8ject");
-    };
+    }
     if (intersects[0].object.userData === "Responsive layout") {
       window.open("https://su8ject.github.io/lerning/3/");
-    };
+    }
     if (intersects[0].object.userData === "Honey store (HTML + CSS)") {
       window.open("https://su8ject.github.io/lerning/4/");
-    };
+    }
     if (intersects[0].object.userData === "Honey store (react)") {
       window.open( "https://su8ject.github.io/honey/dist/#/");
-    };
+    }
     if (intersects[0].object.userData === "Rick and Morty") {
       window.open("https://su8ject.github.io/rick-and-morty/dist/#/");
-    };
+    }
     if (intersects[0].object.userData === "To Do") {
       window.open("https://su8ject.github.io/to-do/dist/#/");
-    };
+    }
   };
 
   controls.addEventListener("change", () => {
@@ -65,6 +65,7 @@ const init = () => {
   controls.enableDamping = true;
   controls.enableZoom = false;
   controls.enableRotate = true;
+  controls.enablePan = false;
 
   const loader = new GLTFLoader();
   loader.load(
@@ -80,7 +81,7 @@ const init = () => {
     },
     (error) => {
       console.log(error, "An error happened");
-    }
+    },
   );
 
   let mousePos = { x: 0, y: 0 };
@@ -178,7 +179,7 @@ const init = () => {
 
   const onCameraChange = () => {
     objArr.forEach((objData) => {
-      var proj = toScreenPosition(objData.divObj, camera);
+      let proj = toScreenPosition(objData.divObj, camera);
 
       objData.divElem.style.left = proj.x + "px";
       objData.divElem.style.top = proj.y + "px";
@@ -186,10 +187,10 @@ const init = () => {
   };
 
   const toScreenPosition = (obj, camera) => {
-    var vector = new THREE.Vector3();
+    let vector = new THREE.Vector3();
 
-    var widthHalf = 0.5 * window.innerWidth;
-    var heightHalf = 0.5 * window.innerHeight;
+    let widthHalf = 0.5 * window.innerWidth;
+    let heightHalf = 0.5 * window.innerHeight;
 
     obj.updateMatrixWorld();
     vector.setFromMatrixPosition(obj.matrixWorld);
