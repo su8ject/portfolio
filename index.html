@@ -6,12 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Portfolio</title>
     <link rel="icon" href="planet.svg"/>
-    <link rel="preconnect" href="https://fonts.googleapis.com"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-    <link
-            href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap"
-            rel="stylesheet"
-    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
@@ -31,18 +28,26 @@
         <div></div>
     </div>
 </div>
+<div class="hint">
+    <svg class="svg">
+        <use xlink:href="sprite.svg#wheelDown"></use>
+    </svg>
+    <svg class="svg">
+        <use xlink:href="sprite.svg#slash"></use>
+    </svg>
+    <svg class="svg">
+        <use xlink:href="sprite.svg#arrow"></use>
+    </svg>
+</div>
 <script type="importmap">
-      {
-        "imports": {
+ {
+    "imports": {
           "three": "https://unpkg.com/three@0.146.0/build/three.module.js",
           "OrbitControls": "https://unpkg.com/three@0.146.0/examples/jsm/controls/OrbitControls.js",
           "GLTFLoader": "https://unpkg.com/three@0.146.0/examples/jsm/loaders/GLTFLoader.js",
           "RectAreaLightUniformsLib": "https://unpkg.com/three@0.146.0/examples/jsm/lights/RectAreaLightUniformsLib.js"
-        }
-      }
-
-
-
+    }
+  }
 </script>
 <script type="module" src="index.js"></script>
 </body>

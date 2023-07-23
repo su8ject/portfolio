@@ -1,3 +1,9 @@
+:root {
+    --main-color: #ffffff;
+    --shadow-color: #807979;
+    --bg-color: #000000;
+}
+
 *,
 *::before,
 *::after {
@@ -10,22 +16,15 @@ ul {
     list-style: none;
 }
 
-a {
-    color: white;
-    position: relative;
-    text-decoration: none;
-    font-size: 20px;
-}
-
 html {
-    font-family: "Roboto", sans-serif;
+    font-family: 'Lato', sans-serif;
 }
 
 .wrapper-loader {
     position: absolute;
     width: 100vw;
     height: 100vh;
-    background: #000000;
+    background: var(--bg-color);
 }
 
 .lds-spinner {
@@ -51,7 +50,7 @@ html {
     width: 6px;
     height: 18px;
     border-radius: 20%;
-    background: #fff;
+    background: var(--main-color);
 }
 
 .lds-spinner div:nth-child(1) {
@@ -125,8 +124,57 @@ html {
 
 .name {
     display: none;
+    color: var(--main-color);
+    transition: 0.1s;
+}
+
+.name.hover {
+    box-shadow: 0 0 10px 10px var(--shadow-color);
+    background-color: var(--shadow-color);
 }
 
 .name.active {
     display: block;
+}
+
+.black {
+    color: #000000;
+}
+
+.hint {
+    display: flex;
+    position: absolute;
+    left: calc(50vw - 180px);
+    bottom: 0px;
+    opacity: 0;
+    transition: 0.8s;
+}
+
+.hint.active {
+    opacity: inherit;
+}
+
+.hint.pulse {
+    transform: scale(1);
+    animation: pulse 2s infinite;
+}
+
+.svg {
+    width: 120px;
+    fill: var(--main-color);
+    stroke: var(--main-color);
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    70% {
+        transform: scale(0.95);
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
