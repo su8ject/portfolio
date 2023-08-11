@@ -13,6 +13,11 @@ const init = () => {
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
 
+    const platform = navigator.platform;
+    if (platform === "Android" || platform === "iPhone" || platform === "iPod" || platform === "iPad") {
+        window.open("https://su8ject.github.io/m.portfolio/");
+    }
+
     const onPointerMove = (event) => {
         pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
         pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
