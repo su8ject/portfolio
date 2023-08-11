@@ -18,6 +18,8 @@ const init = () => {
         location.href = "https://su8ject.github.io/m.portfolio/";
     }
 
+    console.log(platform);
+
     const onPointerMove = (event) => {
         pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
         pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
