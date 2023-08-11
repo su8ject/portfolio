@@ -15,7 +15,7 @@ const init = () => {
 
     const platform = navigator.platform;
     if (platform === "Android" || platform === "iPhone" || platform === "iPod" || platform === "iPad") {
-        window.open("https://su8ject.github.io/m.portfolio/");
+        location.href = "https://su8ject.github.io/m.portfolio/";
     }
 
     const onPointerMove = (event) => {
