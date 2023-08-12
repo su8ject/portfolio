@@ -13,8 +13,8 @@ const init = () => {
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
 
-    const platform = navigator.platform;
-    if (platform === "Android" || platform === "iPhone" || platform === "iPod" || platform === "iPad" || !platform.search("Linux")) {
+    const platform = navigator.userAgent;
+    if (platform.search("Android" || "iPhone" || "iPod" || "iPad" ) !== -1) {
         location.href = "https://su8ject.github.io/m.portfolio/";
     }
     
