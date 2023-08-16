@@ -14,7 +14,7 @@ const init = () => {
     const pointer = new THREE.Vector2();
 
     const platform = navigator.userAgent;
-    if (platform.search("Android" || "iPhone" || "iPod" || "iPad" ) !== -1) {
+    if (platform.match(/Android|Mobile|IEMobile|Opera Mini|iPhone|iPad|iPod/)) {
         location.href = "https://su8ject.github.io/m.portfolio/";
     }
     
